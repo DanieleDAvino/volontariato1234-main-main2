@@ -14,3 +14,24 @@
 [03-Mar-2026 21:47:53 Europe/Berlin] PHP Warning:  Undefined variable $db_name in C:\xampp\htdocs\volontariato1234-main\registrazione.php on line 51
 [03-Mar-2026 21:47:53 Europe/Berlin] PHP Warning:  Undefined variable $db_user in C:\xampp\htdocs\volontariato1234-main\registrazione.php on line 51
 [03-Mar-2026 21:47:53 Europe/Berlin] PHP Warning:  Undefined variable $db_pass in C:\xampp\htdocs\volontariato1234-main\registrazione.php on line 51
+[10-Mar-2026 23:09:10 Europe/Berlin] password inserita: Daniele@07
+[10-Mar-2026 23:09:10 Europe/Berlin] password nel db: $2y$10$xYVMTkEFPoT.NVdi28nkgOM
+[10-Mar-2026 23:09:10 Europe/Berlin] verify: FALSE
+[10-Mar-2026 23:10:33 Europe/Berlin] password inserita: Daniele@07
+[10-Mar-2026 23:10:33 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type bool in C:\xampp\htdocs\volontariato1234-main-main\accesso.php on line 40
+[10-Mar-2026 23:10:33 Europe/Berlin] password nel db: 
+[10-Mar-2026 23:10:33 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type bool in C:\xampp\htdocs\volontariato1234-main-main\accesso.php on line 41
+[10-Mar-2026 23:10:33 Europe/Berlin] verify: FALSE
+[10-Mar-2026 23:10:34 Europe/Berlin] password inserita: Daniele@07
+[10-Mar-2026 23:10:34 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type bool in C:\xampp\htdocs\volontariato1234-main-main\accesso.php on line 40
+[10-Mar-2026 23:10:34 Europe/Berlin] password nel db: 
+[10-Mar-2026 23:10:34 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type bool in C:\xampp\htdocs\volontariato1234-main-main\accesso.php on line 41
+[10-Mar-2026 23:10:34 Europe/Berlin] verify: FALSE
+[10-Mar-2026 23:10:35 Europe/Berlin] password inserita: Daniele@07
+[10-Mar-2026 23:10:35 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type bool in C:\xampp\htdocs\volontariato1234-main-main\accesso.php on line 40
+[10-Mar-2026 23:10:35 Europe/Berlin] password nel db: 
+[10-Mar-2026 23:10:35 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type bool in C:\xampp\htdocs\volontariato1234-main-main\accesso.php on line 41
+[10-Mar-2026 23:10:35 Europe/Berlin] verify: FALSE
+[10-Mar-2026 23:11:06 Europe/Berlin] password inserita: Daniele@07
+[10-Mar-2026 23:11:06 Europe/Berlin] password nel db: $2y$10$BBbKbJi1cAcTCP1YIoALBeJ6KtFtqCpGtUgtRujHUGzE2j2qdLqRa
+[10-Mar-2026 23:11:06 Europe/Berlin] verify: TRUE

@@ -61,7 +61,18 @@ try {
     );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "INSERT INTO registrazioni (nome, cognome, email, psswd, telefono, eta, area, disponibilita, esperienze, motivazione)
+    //emaoil duplicata, per vedere se è registrato o deve fare l'accesso
+    $checkStmt = $pdo->prepare("SELECT id FROM registrazioni WHERE email = :email");
+    $checkStmt->execute([':email' => $email]);
+    if($checkStmt->rowCount() > 0) {
+    echo json_encode([
+        'successo' => false,
+        'messaggio' => 'Email già registrata! <a href="accesso.html">Clicca qui per fare il login</a>'
+    ]);
+    exit;
+}
+   
+   $sql = "INSERT INTO registrazioni (nome, cognome, email, psswd, telefono, eta, area, disponibilita, esperienze, motivazione)
             VALUES (:nome, :cognome, :email, :psswd, :telefono, :eta, :area, :disponibilita, :esperienze, :motivazione)";
 
     $stmt = $pdo->prepare($sql);

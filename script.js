@@ -33,6 +33,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     initRegistrationForm();
                 }
 
+               //vede se deve fare l'accesso
+                if(url === 'accesso.html') {
+                    initLoginForm();  
+                }
+
                 //image-card
                 document.querySelectorAll('.image-card').forEach(card => {
                     card.addEventListener('click', function(e) {
@@ -197,5 +202,73 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+
+    function initLoginForm() {
+    const form = document.getElementById('login-form');
+    if(!form) return;
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const email         = document.getElementById('email').value;
+        const psswd         = document.getElementById('psswd').value;
+        const btnLogin      = document.getElementById('btn-login');
+        const messaggioRisposta = document.getElementById('messaggio-risposta');
+
+        // VALIDAZIONE
+        let allertString = "";
+
+        const patternEmail = /^\w+\.?\w+?\@{1}[A-z]{1,}\.{1}[A-z]{2,}$/;
+        if(!patternEmail.test(email)) {
+            allertString += "- Email non valida\n";
+        }
+        if(psswd.length < 8) {
+            allertString += "- Password troppo corta\n";
+        }
+        if(allertString !== "") {
+            alert(allertString);
+            return;
+        }
+
+        btnLogin.disabled = true;
+        btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Accesso in corso...';
+        messaggioRisposta.style.display = 'none';
+
+        const datiForm = new FormData();
+        datiForm.append('email', email);
+        datiForm.append('psswd', psswd);
+
+        try {
+            const risposta = await fetch('accesso.php', {
+                method: 'POST',
+                body: datiForm
+            });
+
+            const risultato = await risposta.json();
+            messaggioRisposta.style.display = 'block';
+
+            if(risultato.successo) {
+                messaggioRisposta.className = 'alert alert-success mt-3';
+                messaggioRisposta.innerHTML = '<i class="fas fa-check-circle me-2"></i>Bentornato/a ' + risultato.nome + '! Reindirizzamento...';
+
+                setTimeout(() => {
+                    window.location.href = 'eventi.html';
+                }, 1500);
+
+            } else {
+                messaggioRisposta.className = 'alert alert-danger mt-3';
+                messaggioRisposta.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>' + risultato.messaggio;
+            }
+
+        } catch(errore) {
+            messaggioRisposta.style.display = 'block';
+            messaggioRisposta.className = 'alert alert-danger mt-3';
+            messaggioRisposta.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Errore di connessione. Riprova più tardi.';
+        } finally {
+            btnLogin.disabled = false;
+            btnLogin.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Accedi';
+        }
+    });
+}
 
 });
