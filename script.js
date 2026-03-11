@@ -28,12 +28,12 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(data => {
                 container.innerHTML = data;
 
-                //inizializza i componenti necessari
+                //se deve fare la registrazione chiama la funzione
                 if(url === 'registrazione.html') {
                     initRegistrationForm();
                 }
 
-               //vede se deve fare l'accesso
+               //vede se deve fare l'accesso chiama l'altra funzione
                 if(url === 'accesso.html') {
                     initLoginForm();  
                 }
@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     }
 
-    function initRegistrationForm() {
+    function initRegistrationForm() {//funzione per la regitrazione
         const form = document.getElementById('registration-form');
         if(!form) return;
 
@@ -88,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
             e.preventDefault();
             e.stopPropagation();
 
+            //prende tutti i campi
             const nome          = document.getElementById('nome').value;
             const cognome       = document.getElementById('cognome').value;
             const email         = document.getElementById('email').value;
@@ -146,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
             btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Invio in corso...';
             messaggioRisposta.style.display = 'none';
 
+            //dati da inviare al php
             const datiForm = new FormData();
             datiForm.append('nome', nome);
             datiForm.append('cognome', cognome);
@@ -158,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
             datiForm.append('esperienze', esperienze);
             datiForm.append('motivazione', motivazione);
 
-            try {
+            try {//ivia i dati al php
                 const risposta = await fetch('registrazione.php', {
                     method: 'POST',
                     body: datiForm
@@ -168,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 messaggioRisposta.style.display = 'block';
 
-                if(risultato.successo) {
+                if(risultato.successo) {//messaggio di successo
                     messaggioRisposta.className = 'alert alert-success mt-3';
                     messaggioRisposta.innerHTML = '<i class="fas fa-check-circle me-2"></i>' + risultato.messaggio;
                     form.reset();
@@ -191,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     messaggioRisposta.innerHTML = msg;
                 }
 
-            } catch (errore) {
+            } catch (errore) {//errore di connesisone al server
                 messaggioRisposta.style.display = 'block';
                 messaggioRisposta.className = 'alert alert-danger mt-3';
                 messaggioRisposta.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Errore di connessione. Riprova più tardi.';
@@ -203,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function initLoginForm() {
+    function initLoginForm() {//funzione per l'accesso
     const form = document.getElementById('login-form');
     if(!form) return;
 
@@ -234,11 +236,12 @@ document.addEventListener("DOMContentLoaded", function() {
         btnLogin.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Accesso in corso...';
         messaggioRisposta.style.display = 'none';
 
+        //dati da inviare al php
         const datiForm = new FormData();
         datiForm.append('email', email);
         datiForm.append('psswd', psswd);
 
-        try {
+        try {//invia dati al php
             const risposta = await fetch('accesso.php', {
                 method: 'POST',
                 body: datiForm
@@ -247,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const risultato = await risposta.json();
             messaggioRisposta.style.display = 'block';
 
-            if(risultato.successo) {
+            if(risultato.successo) {//messaggio di successo
                 messaggioRisposta.className = 'alert alert-success mt-3';
                 messaggioRisposta.innerHTML = '<i class="fas fa-check-circle me-2"></i>Bentornato/a ' + risultato.nome + '! Reindirizzamento...';
 
@@ -260,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 messaggioRisposta.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>' + risultato.messaggio;
             }
 
-        } catch(errore) {
+        } catch(errore) {//errore di connessione al serber
             messaggioRisposta.style.display = 'block';
             messaggioRisposta.className = 'alert alert-danger mt-3';
             messaggioRisposta.innerHTML = '<i class="fas fa-exclamation-triangle me-2"></i>Errore di connessione. Riprova più tardi.';
