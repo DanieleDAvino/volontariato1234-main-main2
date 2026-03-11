@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 header('Content-Type: application/json');
 
-function pulisci($dato) {
+function pulisci($dato) {//plisce il dato, leva gli spazi all'inizio e alla fine + specialchars
     return htmlspecialchars(trim($dato), ENT_QUOTES, 'UTF-8');
 }
 
@@ -17,11 +17,13 @@ if(empty($email) || empty($psswd)) {
     exit;
 }
 
+//credenziali del db
 $db_host = 'localhost';
 $db_name = 'volontariato';
 $db_user = 'root';
 $db_pass = '';
 
+//connessione al db
 try {
     $pdo = new PDO(
         "mysql:host=$db_host;dbname=$db_name;charset=utf8",
@@ -30,6 +32,7 @@ try {
     );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    //cerca l'utente tramite email
     $stmt = $pdo->prepare("SELECT * FROM registrazioni WHERE email = :email");
     $stmt->execute([':email' => $email]);
     $utente = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,22 +42,19 @@ try {
         exit;
     }
 
-    // Controlla password (se usi password_hash nel db)
-    // if(!password_verify($psswd, $utente['psswd'])) {
-
-    // Se la password è in chiaro nel db (come nel tuo caso attuale):
+    //confronto password
     if(!password_verify($psswd, $utente['psswd'])) {
         echo json_encode(['successo' => false, 'messaggio' => 'Password errata']);
         exit;
     }
 
-    echo json_encode([
+    echo json_encode([//tuttto ok per il login
         'successo' => true,
         'messaggio' => 'Accesso effettuato!',
         'nome' => $utente['nome']
     ]);
 
-} catch(PDOException $e) {
+} catch(PDOException $e) {//errore di connessione al db
     echo json_encode(['successo' => false, 'messaggio' => 'Errore del server', 'debug' => $e->getMessage()]);
 }
 ?>
