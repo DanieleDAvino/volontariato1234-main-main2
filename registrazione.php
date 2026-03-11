@@ -13,14 +13,14 @@ header('Content-Type: application/json');
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/debug.log');
 
-function pulisci($dato) {
+function pulisci($dato) {//stessa funzione
     return htmlspecialchars(trim($dato), ENT_QUOTES, 'UTF-8');
 }
 
 $nome          = pulisci($_POST['nome']          ?? '');
 $cognome       = pulisci($_POST['cognome']       ?? '');
 $email         = pulisci($_POST['email']         ?? '');
-$psswd         = password_hash($_POST['psswd'] ?? '', PASSWORD_BCRYPT);
+$psswd         = password_hash($_POST['psswd'] ?? '', PASSWORD_BCRYPT);//la psswd deve serre hash
 $telefono      = pulisci($_POST['telefono']      ?? '');
 $eta           = pulisci($_POST['eta']           ?? '');
 $area          = pulisci($_POST['area']          ?? '');
@@ -28,17 +28,17 @@ $disponibilita = pulisci($_POST['disponibilita'] ?? '');
 $esperienze    = pulisci($_POST['esperienze']    ?? '');
 $motivazione   = pulisci($_POST['motivazione']   ?? '');
 
-if (empty($nome) || empty($email) || empty($telefono)) {
+if (empty($nome) || empty($email) || empty($telefono)) {//questi campi sono obbligatori
     echo json_encode(['successo' => false, 'messaggio' => 'Nome, email e telefono sono obbligatori']);
     exit;
 }
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {//cntrollo formato email
     echo json_encode(['successo' => false, 'messaggio' => 'Email non valida']);
     exit;
 }
 
-$areaDescrizione = match($area) {
+$areaDescrizione = match($area) {//se sceglie una cosa del menu lo associa a questo
     'donazione'      => 'Donazione di Sangue e Organi',
     'ospedali'       => 'Supporto negli Ospedali',
     'assistenza'     => 'Assistenza a Persone con Malattie',
@@ -71,7 +71,7 @@ try {
     ]);
     exit;
 }
-   
+   //query per aggiungere l'utente al db
    $sql = "INSERT INTO registrazioni (nome, cognome, email, psswd, telefono, eta, area, disponibilita, esperienze, motivazione)
             VALUES (:nome, :cognome, :email, :psswd, :telefono, :eta, :area, :disponibilita, :esperienze, :motivazione)";
 
@@ -89,7 +89,7 @@ try {
         ':motivazione'   => $motivazione
     ]);
 
-} catch (PDOException $e) {
+} catch (PDOException $e) {//errore durante l'inerimento di un utente al db
     echo json_encode([
         'successo' => false,
         'messaggio' => 'Errore nel salvataggio dei dati.',
@@ -116,6 +116,7 @@ try {
     $mail->Subject = 'Registrazione Volontario - Conferma Ricevuta';
     $mail->isHTML(true);
 
+    //aspetto dell'email
     $mail->Body = "
     <!DOCTYPE html>
     <html>
@@ -168,13 +169,15 @@ try {
     </body>
     </html>";
 
+    //se a chi arriva l'email non supporta html
     $mail->AltBody = "Ciao $nome,\n\nRegistrazione ricevuta!\n\nNome: $nome\nEmail: $email\nTelefono: $telefono\nEtà: $eta\nArea: $areaDescrizione\nDisponibilità: $disponibilita\n\nTi contatteremo entro 48 ore.\n\nVolontariato Sanitario";
 
     $mail->send();
 
+    //registrazione tutto ok
     echo json_encode(['successo' => true, 'messaggio' => 'Registrazione completata! Controlla la tua email per i dettagli.']);
 
-} catch (Exception $e) {
+} catch (Exception $e) {//no email ma ok il salvataggio nel db
     $errore = $mail->ErrorInfo;
     error_log("PHPMailer error: " . $errore);
     echo json_encode([
